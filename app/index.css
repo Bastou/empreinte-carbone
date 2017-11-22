@@ -1,0 +1,93 @@
+@import url(https://fonts.googleapis.com/css?family=Dosis:700);
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  font-family: sans-serif;
+  font-family: "Dosis", Helvetica, Arial, sans-serif;
+}
+
+/* Scene */
+#scene {
+  position: absolute;
+  z-index: 1;
+}
+
+/* year text */
+.bigYear {
+  position: absolute;
+  font-size: 330px;
+  color: #FFF;
+  font-family: helvetica, sans-serif;
+  font-weight: 100;
+  opacity: 0.2;
+  top: 50%;
+  /* height: 20%; */
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+
+/* Timeline */
+.timeline {
+  position: absolute;
+  z-index: 2;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.timeline__value {
+  width: auto;
+  color: #FFF;
+  text-align: center;
+  margin-bottom: 30px;
+}
+input[type="range"] {
+  display: block;
+  -webkit-appearance: none;
+  background-color: #bdc3c7;
+  background: repeating-linear-gradient(
+          to right,
+          #000,
+          #000 5px,
+          #fff 5px,
+          #fff 10px
+  );
+  width: 700px;
+  height: 1px;
+  border-radius: 5px;
+  margin: 0 auto;
+  outline: 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: transparent;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid white;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}​
+ input[type="range"]::-webkit-slider-thumb:hover {
+   background-color: white;
+   border: 1px solid #e74c3c;
+ }
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.2);
+}
+
+/* Config */
+.dg.ac {
+  z-index: 200 !important;
+}
+
+/* Debugger */
+.debugger {
+  background: white;
+  display: inline-block;
+  padding: 10px;
+  position: absolute;
+  z-index: 100;
+}

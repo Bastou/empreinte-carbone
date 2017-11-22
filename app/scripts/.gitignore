@@ -1,0 +1,10 @@
+.DS_Store
+*.log
+node_modules
+build
+*.node
+*.orig
+.idea
+test/out-fixtures/*
+test/watch-*.txt
+.sass-cache/
