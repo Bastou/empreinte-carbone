@@ -1,23 +1,49 @@
 // third party
 import Dat from 'threejs-utils/lib/dat.gui.min.js';
 import Simplex from './vendors/simplex-noise.js';
-// scene objects
-import Plane from './objects/Plane.js';
+// scene objects3D
+import Plane from './objects3D/Plane.js';
 
 export default class Scene3D {
 
     constructor() {
         this.controls = null;
-        this.planeData = {
-            height: 0
-        }
+        //this.planeHeight = getPlaneHeight()
+
+        // Time
+        this.clock = new THREE.Clock();
+        this.delta = 0;
+        this.time = 0;
+
+        // Data
 
         // Simplex
         this.simplex = new Simplex();
 
+        // this.scaler
+
+        // Colors
+        this.colors = [
+            ['#7074FF', '#BD28FD'],
+            ['#7074FF', '#BD28FD'],
+            ['#00ECBC', '#2A9BF9'],
+            ['#FFE19B', '#FC9696'],
+            ['#8B9AB2', '#FCFCFC'],
+            ['#2D6BDF', '#89F7FE'],
+            ['#20E26C', '#FEFFBF'],
+            ['#FF7B31', '#FFF376'],
+            ['#FFD8B9', '#F71B3A'],
+        ];
+
+        this.sceneColors = this.getRandomColors();
+
+
+    }
+
+    init() {
         // TODO: fun init outside constructor
         this.container = document.querySelector('#scene');
-        document.body.appendChild(this.container);
+        //document.body.appendChild(this.container);
 
         // Camera
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -25,13 +51,16 @@ export default class Scene3D {
 
         this.scene = new THREE.Scene();
 
-        // init objects scene
+        // init objects3D scene
         this.plane = new Plane({
             app: this
         });
 
 
         // lights
+        this.lightGroup = new THREE.Group();
+        this.bottomLight = null;
+        this.ambientLight = null;
         this.initLights();
 
 
@@ -53,14 +82,22 @@ export default class Scene3D {
 
         // GUI
         if(appConfig.gui) this.initGui();
-
-
     }
 
     render() {
+        //console.log(Math.round(Math.random() * this.colors.length))
+        // time stuff
+        this.delta = this.clock.getDelta();
+        this.time = this.clock.getElapsedTime();
 
-        // animate stuff
+        // Update scaler
+        this.scaler = this.getScaler();
+
+        // animate plane
         this.plane.animate();
+
+        // Lights
+        this.updateLights();
 
         // plane data
         //console.log(this.plane.height);
@@ -78,30 +115,53 @@ export default class Scene3D {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
+    // Faire une class pour les lights
     initLights() {
-        //const ambientLight = new THREE.AmbientLight(0xaaaaaa)
-        // Point color 1
-        const pointLight = new THREE.PointLight(new THREE.Color('#7074FF'))
-        pointLight.position.set(20, 25, 10)
+
+        // Main ambiant light
+        this.ambientLight = new THREE.AmbientLight(0xC6C6C6);
+        this.ambientLight.intensity = 0.5;
+        this.ambientLight.name = "ambiant light";
+
+        // Bottom light
+        this.bottomLight = new THREE.PointLight(0xC6C6C6);
+        this.bottomLight.position.set(26, 36, 39);
+        this.bottomLight.intensity = 0.5;
+        this.bottomLight.name = "bottomLight";
+
+        // Light color 2
+        const pointLight = new THREE.PointLight(this.sceneColors[0]);
+        pointLight.position.set(20, 22, 10);
         pointLight.intensity = 1;
 
 
-        // Point light color 2
+        // Dark left
         const pointLight2 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight2.position.set(-40, 15, 15)
-        pointLight2.intensity = -1.52;
+        pointLight2.position.set(-31, 13, 31)
+        pointLight2.intensity = -1.44;
         //this.scene.add(ambientLight)
 
-        // Point light color 3
+        // Dark center
         const pointLight3 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight3.position.set(0, 25, 0)
-        pointLight3.intensity = -0.48;
+        pointLight3.position.set(0, 22, 0)
+        pointLight3.intensity = -0.55;
         //this.scene.add(ambientLight)
 
+        // Dark right
+        const pointLight4 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
+        pointLight4.position.set(23, 5.3, 35)
+        pointLight4.intensity = -1.8;
+        //this.scene.add(ambientLight)
 
-        this.scene.add(pointLight);
-        this.scene.add(pointLight2);
-        this.scene.add(pointLight3);
+        // Add them to scene
+        this.scene.add(this.ambientLight);
+        this.scene.add(this.bottomLight);
+
+        this.lightGroup.add(pointLight);
+        this.lightGroup.add(pointLight2);
+        this.lightGroup.add(pointLight3);
+        this.lightGroup.add(pointLight4);
+        this.scene.add(this.lightGroup);
 
 
         var sphereSize = 4;
@@ -111,10 +171,39 @@ export default class Scene3D {
         var sphereSize = 2;
         var pointLightHelper2 = new THREE.PointLightHelper( pointLight2, sphereSize );
         this.scene.add( pointLightHelper2 );
+
+
+        var sphereSize = 2;
+        var pointLightHelper4 = new THREE.PointLightHelper( pointLight4, sphereSize );
+        this.scene.add( pointLightHelper4 );
+
+        var sphereSize = 1;
+        var pointLightHelper4 = new THREE.PointLightHelper( this.bottomLight, sphereSize );
+        this.scene.add( pointLightHelper4 );
+    }
+
+    updateLights() {
+        this.lightGroup.position.y += (this.plane.height - this.lightGroup.position.y) * 0.1;
+        this.bottomLight.intensity = tools.map_range([1, 330], [1, 6], this.scaler);
+        //console.log( this.ambiantLight );
+        this.ambientLight.intensity = tools.map_range([1, 330], [0.5, 3], this.scaler);
+        //console.log(this.bottomLight.intensity);
     }
 
     getNoise(x, y, z, t) {
         return this.simplex.noise4D(x, y, z, t);
+    }
+
+    getRandomColors() {
+        const selectColors = this.colors[Math.round(Math.random() * this.colors.length)];
+        return selectColors.map(color => new THREE.Color(color))
+    }
+
+    getScaler() {
+        //console.log(tools.map_range(store.state.co2, 500, 2000000, 1, 330))
+        //return tools.map_range(store.state.co2, 500, 2000000, 1, 330)
+        // TODO: debug somethong wrong with the map range
+        return tools.map_range([500, 2000000], [1, 330], store.state.co2)
     }
     // TODO: Move in parent
     initGui() {

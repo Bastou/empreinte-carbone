@@ -1,21 +1,14 @@
-export default class Timeline {
-
-    constructor() {
-        this.update();
-    }
-
-    update() {
-        var elem = document.querySelector('.timeline__range[type="range"]');
-
-        var rangeValue = function(){
-            var newValue = elem.value;
-            var target = document.querySelector('.timeline__value');
-            target.innerHTML = newValue;
-            appConfig.height = newValue;
-            console.log(appConfig);
+export default  {
+    data: function () {
+        return {
+            // State et pas count pour que toutes les mutations soient détectées
+            state: store.state
         }
-
-        elem.addEventListener("input", rangeValue);
-    }
-
+    },
+    template: `<div id="timeline" class="timeline">
+                    <div class="timeline__value">{{ state.co2 }}</div>
+                    <input class="timeline__range" type="range" :min="state.minYear" :max="state.maxYear" step="1" value="0" v-model="state.year">
+                    <div class="timeline__year timeline__year--min">{{state.minYear}}</div>
+                    <div class="timeline__year timeline__year--max">{{state.maxYear}}</div>
+                </div>`,
 };

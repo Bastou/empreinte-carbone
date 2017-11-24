@@ -4,24 +4,33 @@
     </head>
     <body>
         <div id="main">
-            <div id="app" v-if="load">
-                <div class="debugger" v-if="debug">
-                    <input type="number" v-model="year" min="1960" max="2016">
+            <div id="app" v-if="state.load">
+                <div class="debugger" v-if="state.debug">
+                    <input type="number" v-model.lazy="state.minYear" min="1960" max="2014" placeholder="annee">
+                    <!--<input type="text" v-model.lazy="state.country" placeholder="">-->
+                    <v-select v-model.lazy="state.country" :options="state.countries"></v-select>
+                    <hr>
                     <dl>
                         <dt>Year</dt>
-                        <dd>{{year}}</dd>
+                        <dd>{{state.year}}</dd>
                         <dt>co2</dt>
-                        <dd>{{co2}}</dd>
+                        <dd>{{state.co2}}</dd>
+                        <dt>country</dt>
+                        <dd>{{state.country}}</dd>
+                        <dt>scaler</dt>
+                        <dd>{{state.scaler}}</dd>
                     </dl>
+                    <hr>
+                    <!-- <router-link to="/entry">Go to Foo</router-link> -->
                 </div>
-
-                <div class="bigYear">{{ year }}</div>
-                <div id="timeline" class="timeline">
-                    <div class="timeline__value">{{ co2 }}</div>
-                    <input class="timeline__range" type="range" min="1994" max="2017" step="1" value="0" v-model="year">
+                <!-- route outlet -->
+                <!-- component matched by the route will render here -->
+                <div class="view">
+                    <component class="view--inner" :class="state.currentView" v-bind:is="state.currentView">
+                        <!-- component changes when vm.currentView changes! -->
+                    </component>
                 </div>
             </div>
-            <div id="scene"></div>
         </div>
     </body>
 </html>

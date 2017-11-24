@@ -1,64 +1,90 @@
 // third party
 import Vue from 'vue/dist/vue.js';
+//import VueRouter from 'vue-router/dist/vue-router.js'; // On abandonne mamene
 import VueResource from 'vue-resource/dist/vue-resource.js';
-import Data from './Data.js';
-import Scene3D from './Scene3D.js';
+import VueSelect from 'vue-select/dist/vue-select.js';
+import Intro from './components/Intro.js';
+import Entry from './components/Entry.js';
+import Scene from './components/Scene.js';
 import Timeline from './components/Timeline.js';
+import Scene3D from './Scene3D.js';
 
 export default class App {
 
     constructor() {
+
+        // init 3d scene
         this.scene3D = new Scene3D();
-        this.data = new Data();
-        this.timeline = new Timeline();
-
-        /*
-         * Load json
-         */
-        // Call to function with anonymous callback
-        var jsonTest = null;
-        this.data.loadJSON('/climate.json', function(response) {
-            // Do Something with the response e.g.
-            let jsonresponse = JSON.parse(response);
-
-            // Assuming json data is wrapped in square brackets as Drew suggests
-            jsonTest = jsonresponse[0];
-            //console.log(jsonTest);
-        })
-
-        let scene3d = this.scene3D;
+        const scene3d = this.scene3D;
+        //scene3d.init();
 
         // Main app stuff here
+
+        // Init main
+        //Vue.component('v-select', VueSelect.VueSelect)
+        Vue.component('v-select', VueSelect);
+
+        Vue.component('timeline', Timeline);
+
+
+        // Resources
         Vue.use(VueResource);
+
+        // Main vue app
         const vm = new Vue({
             el: '#app',
-            data: {
-                debug: true,
-                json: null,
-                load: false,
-                country: null,
-                year: '1994'
-            },
-            computed: {
-                co2: function() {
-                    let key = Math.round(this.year);
-                    return this.json[0][key]
+            data: function () {
+                return {
+                    // State et pas count pour que toutes les mutations soient détectées
+                    state: store.state,
+                    selected: null
                 }
             },
+            components: {
+                Intro,
+                Entry,
+                Scene
+            },
+            methods: {
+
+            },
             watch: {
-                year: function (val) {
-                    //console.log(scene3d);
-                    scene3d.plane.height = val * 0.01;
-                    console.log(scene3d.plane.height)
+                'state.year': function (val) {
+                    // Adapt to min year
+                    if(this.state.year < this.state.minYear)
+                        this.state.year = this.state.minYear
+                    // Update CO2
+                    store.updateCo2();
+                    // Update scene
+                    //scene3d.plane.height = this.state.co2 * 0.01;
+                    //console.log(scene3d.plane.height)
+                    //scene3d.plane.updateFromCo2()
+                    this.state.timelineUpdating = true;
                 },
-                debug: function (val) {
-                    console.log(appConfig.debug, val)
+                'state.country': function () {
+                    let countryDataJson = this.state.json.filter(( obj ) => {
+                        return obj['Country Name'] == this.state.country;
+                    });
+                    this.state.countryData = countryDataJson[0];
+                    // Update CO2
+                    store.updateCo2();
+                    //scene3d.plane.updateFromCo2()
+                    this.state.timelineUpdating  = true;
                 }
             },
             created: function () {
-                this.$http.get('/climate.json').then(response => {
-                    this.json = JSON.parse(response.bodyText);
-                    this.load = true;
+                this.$http.get('/data/climate.json').then(response => {
+                    // Fill json
+                    this.state.json = JSON.parse(response.bodyText);
+                    // Loaded true
+                    this.state.load = true;
+                    // Fill countries
+                    this.state.json.filter((obj) => {
+                        this.state.countries.push(obj['Country Name'])
+                    });
+
+                    // Fill min and max
+                    //store.updateCo2GlobalMin();
                     //console.log(this.json);
                 });
             }

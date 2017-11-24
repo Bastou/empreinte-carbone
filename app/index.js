@@ -3,15 +3,19 @@ import './index.css';
 import config from './scripts/config';
 
 import OrbitControl from './scripts/vendors/OrbitControls'; // TODO: Add in scene3SD
-import TweenLite from './scripts/Tools';
+import Easing from './scripts/vendors/easing';
+import TweenLite from 'gsap/src/minified/TweenLite.min.js';
+import Store from './scripts/Store';
 import Tools from './scripts/Tools';
 import App from './scripts/App';
 
+window.Easing = Easing;
 window.appConfig = config;
+window.store = new Store();
 window.tools = new Tools();
 window.app = new App();
 
 
 // For three js browser extension 
-window.scene = app.scene;
+window.scene = app.scene3D.scene;
 window.THREE = THREE;
