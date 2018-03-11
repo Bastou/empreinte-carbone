@@ -3,7 +3,7 @@ export default class Store {
     constructor () {
         this.state = {
             // On ajoute les props ici
-            debug: true,
+            debug: false,
             currentView: 'Intro',
             load: false,
             json: null,

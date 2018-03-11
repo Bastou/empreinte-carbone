@@ -30,7 +30,7 @@ export default class Plane {
 
         // Position height
         this.mesh.rotation.x = Math.PI * -0.5
-        this.mesh.position.set(0, 0, 0)
+        this.mesh.position.set(0, -20, 0)
 
         // Tween stuff
         this.iterationCount = 0;

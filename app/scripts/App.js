@@ -5,6 +5,7 @@ import VueResource from 'vue-resource/dist/vue-resource.js';
 import VueSelect from 'vue-select/dist/vue-select.js';
 import Intro from './components/Intro.js';
 import Entry from './components/Entry.js';
+import Entry2 from './components/Entry2.js';
 import Scene from './components/Scene.js';
 import Timeline from './components/Timeline.js';
 import Scene3D from './Scene3D.js';
@@ -43,10 +44,17 @@ export default class App {
             components: {
                 Intro,
                 Entry,
+                Entry2,
                 Scene
             },
-            methods: {
-
+            computed: {
+                viewClass: function () {
+                    if(this.state.currentView == 'Scene') {
+                        return 'scene';
+                    } else {
+                        return 'introduction'
+                    }
+                }
             },
             watch: {
                 'state.year': function (val) {
@@ -70,10 +78,13 @@ export default class App {
                     store.updateCo2();
                     //scene3d.plane.updateFromCo2()
                     this.state.timelineUpdating  = true;
+                },
+                'state.minYear': function () {
+                    this.state.year = this.state.minYear;
                 }
             },
             created: function () {
-                this.$http.get('/data/climate.json').then(response => {
+                this.$http.get('data/climate.json').then(response => {
                     // Fill json
                     this.state.json = JSON.parse(response.bodyText);
                     // Loaded true

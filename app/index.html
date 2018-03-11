@@ -1,15 +1,17 @@
 <html>
-    <head>
-        <title>Emprunte Carbone</title>
-    </head>
-    <body>
-        <div id="main">
-            <div id="app" v-if="state.load">
+<head>
+    <title>Emprunte Carbone - Main</title>
+</head>
+
+<body>
+    <div id="main">
+        <div id="app" v-if="state.load">
+                <!--
                 <div class="debugger" v-if="state.debug">
-                    <input type="number" v-model.lazy="state.minYear" min="1960" max="2014" placeholder="annee">
-                    <!--<input type="text" v-model.lazy="state.country" placeholder="">-->
+                    <input type="number" v-model="state.year" min="1960" max="2016">
                     <v-select v-model.lazy="state.country" :options="state.countries"></v-select>
                     <hr>
+
                     <dl>
                         <dt>Year</dt>
                         <dd>{{state.year}}</dd>
@@ -21,16 +23,18 @@
                         <dd>{{state.scaler}}</dd>
                     </dl>
                     <hr>
-                    <!-- <router-link to="/entry">Go to Foo</router-link> -->
                 </div>
+                -->
+
                 <!-- route outlet -->
                 <!-- component matched by the route will render here -->
-                <div class="view">
+                <div class="view" :class="viewClass">
                     <component class="view--inner" :class="state.currentView" v-bind:is="state.currentView">
                         <!-- component changes when vm.currentView changes! -->
                     </component>
                 </div>
-            </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

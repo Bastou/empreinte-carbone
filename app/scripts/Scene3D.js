@@ -35,13 +35,16 @@ export default class Scene3D {
             ['#FFD8B9', '#F71B3A'],
         ];
 
-        this.sceneColors = this.getRandomColors();
+        this.sceneColors = null;
 
 
     }
 
     init() {
-        // TODO: fun init outside constructor
+
+        // Colors
+        this.sceneColors = this.getRandomColors();
+
         this.container = document.querySelector('#scene');
         //document.body.appendChild(this.container);
 
@@ -55,7 +58,6 @@ export default class Scene3D {
         this.plane = new Plane({
             app: this
         });
-
 
         // lights
         this.lightGroup = new THREE.Group();
@@ -77,11 +79,11 @@ export default class Scene3D {
         this.renderer.animate(this.render.bind(this));
 
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-        this.camera.position.set( 0, 40, 70);
+        this.camera.position.set( 0, 70, 130);
         this.controls.update();
 
         // GUI
-        if(appConfig.gui) this.initGui();
+        //if(appConfig.gui) this.initGui();
     }
 
     render() {
@@ -99,10 +101,12 @@ export default class Scene3D {
         // Lights
         this.updateLights();
 
+        this.updateCamera();
+
         // plane data
         //console.log(this.plane.height);
 
-        this.controls.update();
+        //this.controls.update();
 
         // render stuff
         this.renderer.render(this.scene, this.camera);
@@ -131,25 +135,25 @@ export default class Scene3D {
 
         // Light color 2
         const pointLight = new THREE.PointLight(this.sceneColors[0]);
-        pointLight.position.set(20, 22, 10);
+        pointLight.position.set(20, 0.2, 10);
         pointLight.intensity = 1;
 
 
         // Dark left
         const pointLight2 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight2.position.set(-31, 13, 31)
+        pointLight2.position.set(-31, -7, 31)
         pointLight2.intensity = -1.44;
         //this.scene.add(ambientLight)
 
         // Dark center
         const pointLight3 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight3.position.set(0, 22, 0)
+        pointLight3.position.set(0, 0.2, 0)
         pointLight3.intensity = -0.55;
         //this.scene.add(ambientLight)
 
         // Dark right
         const pointLight4 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight4.position.set(23, 5.3, 35)
+        pointLight4.position.set(23, -15, 35)
         pointLight4.intensity = -1.8;
         //this.scene.add(ambientLight)
 
@@ -163,7 +167,7 @@ export default class Scene3D {
         this.lightGroup.add(pointLight4);
         this.scene.add(this.lightGroup);
 
-
+        /*
         var sphereSize = 4;
         var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
         this.scene.add( pointLightHelper );
@@ -180,6 +184,12 @@ export default class Scene3D {
         var sphereSize = 1;
         var pointLightHelper4 = new THREE.PointLightHelper( this.bottomLight, sphereSize );
         this.scene.add( pointLightHelper4 );
+        */
+    }
+
+    updateCamera() {
+        //this.camera.position.z +=  (this.camera.position.z - tools.map_range([1, 330], [70, 600], this.scaler)) * 0.1;
+        //this.camera.position.y = tools.map_range([1, 330], [70, 600], this.scaler);
     }
 
     updateLights() {
@@ -195,7 +205,7 @@ export default class Scene3D {
     }
 
     getRandomColors() {
-        const selectColors = this.colors[Math.round(Math.random() * this.colors.length)];
+        const selectColors = this.colors[Math.floor(Math.random() * this.colors.length)];
         return selectColors.map(color => new THREE.Color(color))
     }
 

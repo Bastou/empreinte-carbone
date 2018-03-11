@@ -1,4 +1,5 @@
-import './index.css';
+import './css/index.css';
+import './css/animate.css';
 
 import config from './scripts/config';
 
