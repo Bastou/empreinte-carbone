@@ -90,7 +90,7 @@ export default class Plane {
         this.setNoiseHeight(this.tick, this.height, this.app.scaler * 0.3);
         //this.updateFromCo2();
         store.state.scaler = this.app.scaler;
-        this.geometry.rotateZ(Math.sin(0.001));
+        this.geometry.rotateZ(Math.sin(0.0008));
     }
 
 };

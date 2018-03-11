@@ -15,7 +15,11 @@ export default class Scene3D {
         this.delta = 0;
         this.time = 0;
 
-        // Data
+        // Mouse
+		this.mouse = {x:0,y:0};
+
+		// Camera
+		this.cameraMoves = {x:0,y:0,z:-0.1,move:false,speed:2};
 
         // Simplex
         this.simplex = new Simplex();
@@ -78,9 +82,14 @@ export default class Scene3D {
 
         this.renderer.animate(this.render.bind(this));
 
-        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+        //this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.camera.position.set( 0, 70, 130);
-        this.controls.update();
+        this.camera.lookAt(this.plane.mesh.position);
+        //this.controls.update();
+
+
+		// Conflicting with auto camera plane height pos
+		//this.mouseMove();
 
         // GUI
         //if(appConfig.gui) this.initGui();
@@ -188,15 +197,17 @@ export default class Scene3D {
     }
 
     updateCamera() {
-        //this.camera.position.z +=  (this.camera.position.z - tools.map_range([1, 330], [70, 600], this.scaler)) * 0.1;
-        //this.camera.position.y = tools.map_range([1, 330], [70, 600], this.scaler);
+		this.camera.position.z += (tools.map_range([1, 330], [130, 500], this.scaler) - this.camera.position.z) * 0.05;
+        //this.camera.position.z = this.cameraPosZ;
+        this.camera.position.y += (tools.map_range([1, 330], [70, 500], this.scaler) - this.camera.position.y) * 0.05;
+        //this.camera.position.z += (tools.map_range([1, 330], [70, 600], this.scaler) - this.camera.position.y) * 0.05;
     }
 
     updateLights() {
         this.lightGroup.position.y += (this.plane.height - this.lightGroup.position.y) * 0.1;
-        this.bottomLight.intensity = tools.map_range([1, 330], [1, 6], this.scaler);
+        this.bottomLight.intensity = tools.map_range([1, 330], [1, 4], this.scaler);
         //console.log( this.ambiantLight );
-        this.ambientLight.intensity = tools.map_range([1, 330], [0.5, 3], this.scaler);
+        this.ambientLight.intensity = tools.map_range([1, 330], [0.5, 2], this.scaler);
         //console.log(this.bottomLight.intensity);
     }
 
@@ -221,4 +232,19 @@ export default class Scene3D {
         this.gui = new Dat.GUI();
         //this.gui.add(appConfig, 'debug');
     }
+
+    mouseMove() {
+		window.addEventListener('mousemove', (e) => {
+
+			this.camera.position.x += Math.max(Math.min((e.clientX - this.mouse.x) * 0.08, this.cameraMoves.speed), -this.cameraMoves.speed);
+			this.camera.position.y += Math.max(Math.min((this.mouse.y - e.clientY) * 0.06, this.cameraMoves.speed), -this.cameraMoves.speed);
+
+
+			this.mouse.x = e.clientX;
+			this.mouse.y = e.clientY;
+
+			this.camera.lookAt(this.plane.mesh.position);
+
+		})
+	}
 };

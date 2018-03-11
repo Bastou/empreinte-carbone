@@ -4,11 +4,11 @@ export default class Store {
         this.state = {
             // On ajoute les props ici
             debug: false,
-            currentView: 'Intro',
+            currentView: 'Scene', // Intro
             load: false,
             json: null,
             countries: [],
-            country: null,
+            country: 'France', // Null
             countryData: null,
             year: '1960',
             minYear: '1960',
