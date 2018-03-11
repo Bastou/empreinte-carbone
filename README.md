@@ -1,4 +1,6 @@
-# Three.js Boilerplate
+# Empreinte Carbone
+
+Data Visualization that create a unique shape from the CO2 evolution of your country and your birth date
 
 ## Setup
 
