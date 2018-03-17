@@ -32,8 +32,10 @@ body {
 #scene {
     position: absolute;
     z-index: 1;
-    top: 8%;
+    top: 0;
     left: 0;
+	right:0;
+	bottom:0;
 
 }
 

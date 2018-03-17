@@ -8,7 +8,6 @@ export default class Scene3D {
 
     constructor() {
         this.controls = null;
-        //this.planeHeight = getPlaneHeight()
 
         // Time
         this.clock = new THREE.Clock();
@@ -19,7 +18,9 @@ export default class Scene3D {
 		this.mouse = {x:0,y:0};
 
 		// Camera
-		this.cameraMoves = {x:0,y:0,z:-0.1,move:false,speed:2};
+		this.cameraMoves = {x:0,y:0,z:-0.1,move:false,speed:1};
+		this.cameraTargetShift = new THREE.Vector3( 0, 5, 0); // Permet de voir le plane légerement en dessous de la date
+		this.cameraTarget = null;
 
         // Simplex
         this.simplex = new Simplex();
@@ -36,10 +37,54 @@ export default class Scene3D {
             ['#2D6BDF', '#89F7FE'],
             ['#20E26C', '#FEFFBF'],
             ['#FF7B31', '#FFF376'],
+            ['#FF7B31', '#FFF376'],
             ['#FFD8B9', '#F71B3A'],
         ];
 
         this.sceneColors = null;
+
+        this.pointLights = {
+        	"mainPointLight": {
+        		obj: null,
+        		color: 0xffffff,
+				intensity: 0.4,
+				initPos: {
+        			x:-40,
+					y:5,
+					z:40
+				}
+			},
+			"pointLightColor": {
+        		obj: null,
+				color: 0x000000,
+				intensity: 1.3,
+				initPos: {
+					x:15,
+					y:15,
+					z:5
+				}
+			},
+			"pointLightDarkenCenter": {
+        		obj: null,
+				color: 0xFFFFFF,
+				intensity: -0.7,
+				initPos: {
+					x:0,
+					y:-4,
+					z:0
+				}
+			},
+			"pointLightDarkRight": {
+        		obj: null,
+				color: 0xFFFFFF,
+				intensity: -2.2,
+				initPos: {
+					x:23,
+					y:-15,
+					z:35
+				}
+			}
+		}
 
 
     }
@@ -82,9 +127,13 @@ export default class Scene3D {
 
         this.renderer.animate(this.render.bind(this));
 
+        // Camera
+		this.cameraTarget = this.plane.mesh.position.clone().add(this.cameraTargetShift)
         //this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-        this.camera.position.set( 0, 70, 130);
-        this.camera.lookAt(this.plane.mesh.position);
+        this.camera.position.set( 0, 10, 80); //0,5, 70
+
+        //this.camera.lookAt(this.plane.mesh.position);
+        this.camera.lookAt(this.cameraTarget);
         //this.controls.update();
 
 
@@ -112,6 +161,8 @@ export default class Scene3D {
 
         this.updateCamera();
 
+        this.mouseMove();
+		//tools.Log(this.cameraTarget.y);
         // plane data
         //console.log(this.plane.height);
 
@@ -131,83 +182,63 @@ export default class Scene3D {
     // Faire une class pour les lights
     initLights() {
 
-        // Main ambiant light
-        this.ambientLight = new THREE.AmbientLight(0xC6C6C6);
-        this.ambientLight.intensity = 0.5;
-        this.ambientLight.name = "ambiant light";
+        this.ambientLight  = new THREE.AmbientLight(0xffffff, 0.6);
+        this.scene.add(this.ambientLight );
 
-        // Bottom light
-        this.bottomLight = new THREE.PointLight(0xC6C6C6);
-        this.bottomLight.position.set(26, 36, 39);
-        this.bottomLight.intensity = 0.5;
-        this.bottomLight.name = "bottomLight";
+		this.pointLights.pointLightColor.color = this.sceneColors[0]
 
-        // Light color 2
-        const pointLight = new THREE.PointLight(this.sceneColors[0]);
-        pointLight.position.set(20, 0.2, 10);
-        pointLight.intensity = 1;
+		for (const key in this.pointLights) {
+			if (!this.pointLights.hasOwnProperty(key)) continue;
+				const light = this.pointLights[key];
+				light.obj = new THREE.PointLight(light.color)
+				light.obj.position.set(light.initPos.x, light.initPos.y, light.initPos.z)
+				light.obj.intensity = light.intensity
+				this.lightGroup.add(light.obj);
+		}
 
+		this.scene.add(this.lightGroup);
 
-        // Dark left
-        const pointLight2 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight2.position.set(-31, -7, 31)
-        pointLight2.intensity = -1.44;
-        //this.scene.add(ambientLight)
-
-        // Dark center
-        const pointLight3 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight3.position.set(0, 0.2, 0)
-        pointLight3.intensity = -0.55;
-        //this.scene.add(ambientLight)
-
-        // Dark right
-        const pointLight4 = new THREE.PointLight(new THREE.Color('#FFFFFF'))
-        pointLight4.position.set(23, -15, 35)
-        pointLight4.intensity = -1.8;
-        //this.scene.add(ambientLight)
-
-        // Add them to scene
-        this.scene.add(this.ambientLight);
-        this.scene.add(this.bottomLight);
-
-        this.lightGroup.add(pointLight);
-        this.lightGroup.add(pointLight2);
-        this.lightGroup.add(pointLight3);
-        this.lightGroup.add(pointLight4);
-        this.scene.add(this.lightGroup);
-
-        /*
-        var sphereSize = 4;
-        var pointLightHelper = new THREE.PointLightHelper( pointLight, sphereSize );
+		// HELPERS
+        let sphereSize = 4;
+        const pointLightHelper = new THREE.PointLightHelper( this.pointLights.pointLightColor.obj, sphereSize );
         this.scene.add( pointLightHelper );
 
-        var sphereSize = 2;
-        var pointLightHelper2 = new THREE.PointLightHelper( pointLight2, sphereSize );
-        this.scene.add( pointLightHelper2 );
+        sphereSize = 2;
+        const pointLightHelper3 = new THREE.PointLightHelper( this.pointLights.pointLightDarkenCenter.obj, sphereSize );
+        this.scene.add( pointLightHelper3 );
 
+        //
+        // var sphereSize = 1;
+        // var pointLightHelper4 = new THREE.PointLightHelper( this.bottomLight, sphereSize );
+        // this.scene.add( pointLightHelper4 );
 
-        var sphereSize = 2;
-        var pointLightHelper4 = new THREE.PointLightHelper( pointLight4, sphereSize );
-        this.scene.add( pointLightHelper4 );
-
-        var sphereSize = 1;
-        var pointLightHelper4 = new THREE.PointLightHelper( this.bottomLight, sphereSize );
-        this.scene.add( pointLightHelper4 );
-        */
     }
 
     updateCamera() {
-		this.camera.position.z += (tools.map_range([1, 330], [130, 500], this.scaler) - this.camera.position.z) * 0.05;
-        //this.camera.position.z = this.cameraPosZ;
-        this.camera.position.y += (tools.map_range([1, 330], [70, 500], this.scaler) - this.camera.position.y) * 0.05;
-        //this.camera.position.z += (tools.map_range([1, 330], [70, 600], this.scaler) - this.camera.position.y) * 0.05;
+		this.camera.position.y += (tools.map_range([1, 330], [5, 550], this.scaler) - this.camera.position.y) * 0.05;
+		this.camera.position.z += (tools.map_range([1, 330], [70, 300], this.scaler) - this.camera.position.z) * 0.05;
+		this.cameraTarget.y += (tools.map_range([1, 330], [-15, 220], this.scaler) - this.cameraTarget.y) * 0.05;
+
+		this.camera.lookAt(this.cameraTarget);
     }
 
     updateLights() {
-        this.lightGroup.position.y += (this.plane.height - this.lightGroup.position.y) * 0.1;
-        this.bottomLight.intensity = tools.map_range([1, 330], [1, 4], this.scaler);
+    	// Update lightgroup y pos
+        this.lightGroup.position.y += (this.plane.height - this.lightGroup.position.y-6) * 0.08;
+
+        // Update pointLightColor pos
+        this.pointLights.pointLightColor.obj.position.x = this.co2Scale(this.pointLights.pointLightColor.initPos.x, 30)
+        this.pointLights.pointLightColor.obj.position.y = this.co2Scale(this.pointLights.pointLightColor.initPos.y, 75)
+
+		// Update center darker light
+		this.pointLights.pointLightDarkenCenter.obj.position.y = this.co2Scale(this.pointLights.pointLightDarkenCenter.initPos.y, 20)
+
+
+		// Update left darker
+		this.pointLights.pointLightDarkRight.obj.intensity = Math.min(tools.map_range([1, 15], [this.pointLights.pointLightDarkRight.intensity, -1], this.scaler), -0.5);
+        //this.bottomLight.intensity = tools.map_range([1, 330], [1, 4], this.scaler);
         //console.log( this.ambiantLight );
-        this.ambientLight.intensity = tools.map_range([1, 330], [0.5, 2], this.scaler);
+        //this.ambientLight.intensity = tools.map_range([1, 330], [0.5, 2], this.scaler);
         //console.log(this.bottomLight.intensity);
     }
 
@@ -216,16 +247,27 @@ export default class Scene3D {
     }
 
     getRandomColors() {
-        const selectColors = this.colors[Math.floor(Math.random() * this.colors.length)];
-        return selectColors.map(color => new THREE.Color(color))
+		let selectColors = this.colors[Math.floor(Math.random() * this.colors.length)];
+		selectColors = selectColors.map(color => {
+			color = tools.colorLuminance(color, (Math.random() - 0.5)/2)
+			return new THREE.Color(color)
+		})
+		if(Math.round(Math.random())) {
+			selectColors.reverse()
+		}
+		return selectColors
     }
 
     getScaler() {
         //console.log(tools.map_range(store.state.co2, 500, 2000000, 1, 330))
         //return tools.map_range(store.state.co2, 500, 2000000, 1, 330)
         // TODO: debug somethong wrong with the map range
-        return tools.map_range([500, 2000000], [1, 330], store.state.co2)
+		let result = tools.map_range([500, 2000000], [1, 330], store.state.co2)
+        return result
     }
+    co2Scale(initVal, maxVal) {
+    	return tools.map_range([1, 330], [initVal, maxVal], this.scaler);
+	}
     // TODO: Move in parent
     initGui() {
         // GUI
@@ -236,14 +278,9 @@ export default class Scene3D {
     mouseMove() {
 		window.addEventListener('mousemove', (e) => {
 
-			this.camera.position.x += Math.max(Math.min((e.clientX - this.mouse.x) * 0.08, this.cameraMoves.speed), -this.cameraMoves.speed);
-			this.camera.position.y += Math.max(Math.min((this.mouse.y - e.clientY) * 0.06, this.cameraMoves.speed), -this.cameraMoves.speed);
-
+			this.camera.position.x -= Math.max(Math.min((e.clientX - this.mouse.x) * 0.08, this.cameraMoves.speed), -this.cameraMoves.speed);
 
 			this.mouse.x = e.clientX;
-			this.mouse.y = e.clientY;
-
-			this.camera.lookAt(this.plane.mesh.position);
 
 		})
 	}

@@ -7,16 +7,18 @@ export default class Plane {
         this.height = this.baseHeight;
         this.scaler = 0;
         this.tick = 0;
-        this.width = 50;
-        this.widthSegments = 30;
+        this.width = 45;
+        this.widthSegments = 20;
         this.geometry = new THREE.PlaneGeometry(this.width, this.width, this.widthSegments, this.widthSegments);
         this.geometry.verticesNeedUpdate = true;
         this.material = new THREE.MeshLambertMaterial({
-            color: this.app.sceneColors[1],
-            emissive: this.app.sceneColors[1],
-            //shading: THREE.FlatShading,
-            side: THREE.DoubleSide
-            //wireframe: true
+			color: this.app.sceneColors[1], //this.app.sceneColors[1],
+			lightMap: null,
+			lightMapIntensity: 1,
+			emissive: 0x000000,
+			emissiveMap: null,
+			emissiveIntensity: 0.5,
+			specularMap: null
         });
         this.mesh = new THREE.Mesh( this.geometry, this.material )
 
@@ -30,7 +32,7 @@ export default class Plane {
 
         // Position height
         this.mesh.rotation.x = Math.PI * -0.5
-        this.mesh.position.set(0, -20, 0)
+        this.mesh.position.set(0, -20, 0) // -20
 
         // Tween stuff
         this.iterationCount = 0;
