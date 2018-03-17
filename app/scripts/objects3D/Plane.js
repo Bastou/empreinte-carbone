@@ -18,12 +18,16 @@ export default class Plane {
 			emissive: 0x000000,
 			emissiveMap: null,
 			emissiveIntensity: 0.5,
-			specularMap: null
+			specularMap: null,
+			//wireframe: true
         });
         this.mesh = new THREE.Mesh( this.geometry, this.material )
 
         // Array of vertices that gonna be updated
         this.activeVertices = this.getActiveVertices();
+
+        // On cache les 2 petits triangles qui dépassent
+		this.hidePetitsBoutsQuiDepassent();
 
         // Noise
         this.baseAmplitude = 3;
@@ -52,6 +56,13 @@ export default class Plane {
         }
         return vArray;
     }
+
+    hidePetitsBoutsQuiDepassent() {
+		this.geometry.vertices[0].y -= 4
+		this.geometry.vertices[1].x -= 2
+		this.geometry.vertices[this.geometry.vertices.length - 1].y += 5
+		this.geometry.vertices[this.geometry.vertices.length - 2].x += 2
+	}
 
     setNoiseHeight(factor = 1, scale = this.baseHeight, amplitude = 0) {
         const len = this.activeVertices.length;

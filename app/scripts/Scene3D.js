@@ -129,11 +129,10 @@ export default class Scene3D {
 
         // Camera
 		this.cameraTarget = this.plane.mesh.position.clone().add(this.cameraTargetShift)
-        //this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.camera.position.set( 0, 10, 80); //0,5, 70
-
-        //this.camera.lookAt(this.plane.mesh.position);
         this.camera.lookAt(this.cameraTarget);
+
+		//this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         //this.controls.update();
 
 
@@ -199,13 +198,13 @@ export default class Scene3D {
 		this.scene.add(this.lightGroup);
 
 		// HELPERS
-        let sphereSize = 4;
-        const pointLightHelper = new THREE.PointLightHelper( this.pointLights.pointLightColor.obj, sphereSize );
-        this.scene.add( pointLightHelper );
+        // let sphereSize = 4;
+        // const pointLightHelper = new THREE.PointLightHelper( this.pointLights.pointLightColor.obj, sphereSize );
+        // this.scene.add( pointLightHelper );
 
-        sphereSize = 2;
-        const pointLightHelper3 = new THREE.PointLightHelper( this.pointLights.pointLightDarkenCenter.obj, sphereSize );
-        this.scene.add( pointLightHelper3 );
+        // sphereSize = 2;
+        // const pointLightHelper3 = new THREE.PointLightHelper( this.pointLights.pointLightDarkenCenter.obj, sphereSize );
+        // this.scene.add( pointLightHelper3 );
 
         //
         // var sphereSize = 1;
