@@ -269,8 +269,9 @@ export default class Scene3D {
     getScaler() {
         //console.log(tools.map_range(store.state.co2, 500, 2000000, 1, 330))
         //return tools.map_range(store.state.co2, 500, 2000000, 1, 330)
+
         // TODO: debug somethong wrong with the map range
-		let result = tools.map_range([500, 2000000], [1, 330], store.state.co2)
+		let result = tools.map_range([500, 1000000], [1, 330], store.state.co2);
         return result
     }
     co2Scale(initVal, maxVal) {

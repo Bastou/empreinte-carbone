@@ -16,7 +16,7 @@ export default  {
                 <div class="CTA animated fadeInUp" @click="switchToEntry"><a href="#">Démarrer</a></div>
             </div>`,
     methods: {
-        switchToEntry: function () {
+        switchToEntry() {
             this.state.currentView = 'Entry';
         }
     }

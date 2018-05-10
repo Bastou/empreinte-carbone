@@ -15,12 +15,17 @@ export default {
                 <p class="intro_p animated fadeInUp">Afin de rendre ça encore plus personnalisé,
 nous avons besoin de votre pays de naissance :</p>
                 <div class="input-field animated fadeInUp">
-                    <v-select id="localisation" placeholder="ex:France" v-model.lazy="state.country" :options="state.countries"></v-select>
+                    <v-select id="localisation" placeholder="ex:France" v-model.lazy="state.country" :options="state.countries" @keyup.enter="switchToMain"></v-select>
                 </div>
                 <div class="CTA animated fadeInUp "><a href="#" @click.prevent="switchToMain">Voir les résultats</a></div>
             </div>`,
+    watch: {
+        'state.country': function () {
+            setTimeout(this.switchToMain, 80); // Little timeout to see input change
+        }
+    },
     methods: {
-        switchToMain: function () {
+        switchToMain() {
             this.state.currentView = 'Scene';
         }
     }
