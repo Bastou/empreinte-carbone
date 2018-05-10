@@ -2,7 +2,8 @@ export default {
     data: function () {
         return {
             // State et pas count pour que toutes les mutations soient détectées
-            state: store.state
+            state: store.state,
+			inputYear: null
         }
     },
     template: `<div class="intro_container">
@@ -13,15 +14,15 @@ export default {
 
                 <p class="intro_p animated fadeInUp">Pour commencer, nous avons besoin de votre année de naissance :</p>
                 <div class="input-field">
-                    <input placeholder="ex:1994" id="birth_date" type="text" v-model.lazy="state.minYear"  class="animated fadeInUp">
+                    <input placeholder="ex:1994" id="birth_date" type="text" min="state.inputYear" max="state.maxYear" v-model.number="inputYear"  class="animated fadeInUp">
                 </div>
                 <div class="CTA animated fadeInUp"><a href="#" @click.prevent="switchToEntry2">Suivant</a></div>
             </div>`,
     methods: {
         switchToEntry2: function () {
-            let inputYear = Number(this.state.minYear);
-            if(typeof(inputYear) === "number" && inputYear >= 1960 && inputYear < 2014) {
-                this.state.minYear = inputYear;
+			this.inputYear = Number(this.inputYear);
+            if(typeof(this.inputYear) === "number" && this.inputYear >= 1960 && this.inputYear < 2014) {
+                this.state.minYear = this.inputYear;
                 this.state.currentView = 'Entry2';
             }
         }

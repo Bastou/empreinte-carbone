@@ -8,7 +8,7 @@ export default class Plane {
         this.scaler = 0;
         this.tick = 0;
         this.width = 45;
-        this.widthSegments = 20;
+        this.widthSegments = 40;
         this.geometry = new THREE.PlaneGeometry(this.width, this.width, this.widthSegments, this.widthSegments);
         this.geometry.verticesNeedUpdate = true;
         this.material = new THREE.MeshLambertMaterial({
@@ -78,8 +78,8 @@ export default class Plane {
     // TODO: Remove
     updateFromCo2() {
         //TweenLite.to(this.activeVertices, 0.5, {z:store.state.co2 * 0.01})
-        console.log(store.state.timelineUpdating);
-        if(store.state.timelineUpdating == true) {
+        console.log(store.state.timelineActive);
+        if(store.state.timelineActive == true) {
             const len = this.activeVertices.length;
             let update = 0;
             for (let i = 0;i < len; i++) {
@@ -89,7 +89,7 @@ export default class Plane {
                 v.z = Easing['easeOutCubic']( this.app.time, v.z, (store.state.co2 * 0.01) - v.z, this.totalIterations);
                 console.log(v.z )
                 if (this.iterationCount > this.totalIterations) {
-                    store.state.timelineUpdating = false;
+                    store.state.timelineActive = false;
                 }
                 this.iterationCount++;
             }

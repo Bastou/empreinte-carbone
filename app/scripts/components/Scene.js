@@ -43,6 +43,40 @@ export default  {
             <div id="scene"></div>
 </div>`,
     mounted: function () {
-        app.scene3D.init();
+    	// Get timeline dom
+		store.$timeline = document.getElementById('timeline__range')
+		store.$timeline.addEventListener("focus", () => {
+			this.state.timelineUpdating = true;
+			clearInterval(handleAnimateTl);
+		});
+		store.$timeline.addEventListener("blur", () => {
+			this.state.timelineUpdating = false;
+			console.log("blur");
+		});
+
+		// Handle Animate interval
+		let handleAnimateTl = null;
+
+
+		// Init 3d scene
+        app.scene3D.init(() => {
+			// if(this.state.timelineUpdating) return
+			// setTimeout(() => {
+			// 	handleAnimateTl = setInterval(() => {
+			// 		let tlNextVal = parseInt(store.$timeline.value) + 1;
+			// 		if(tlNextVal <= this.state.maxYear) {
+			// 			//console.log(tlNextVal === parseInt(this.state.maxYear) - 1)
+			// 			store.$timeline.value =  tlNextVal
+			// 			this.state.year = tlNextVal
+			// 			//console.log(tlNextVal)
+			// 		} else {
+			// 			clearInterval(handleAnimateTl)
+			// 		}
+			// 	},110)
+			// }, 1500)
+		});
+
+        // Animate timeline
+
     }
 };

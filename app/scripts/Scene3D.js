@@ -1,3 +1,4 @@
+// TODO: optimize 3D animation
 // third party
 import Dat from 'threejs-utils/lib/dat.gui.min.js';
 import Simplex from './vendors/simplex-noise.js';
@@ -89,7 +90,7 @@ export default class Scene3D {
 
     }
 
-    init() {
+    init(callback) {
 
         // Colors
         this.sceneColors = this.getRandomColors();
@@ -141,6 +142,8 @@ export default class Scene3D {
 
         // GUI
         //if(appConfig.gui) this.initGui();
+
+		this.callback = callback()
     }
 
     render() {
@@ -158,9 +161,12 @@ export default class Scene3D {
         // Lights
         this.updateLights();
 
+        // Mouse move camera update x
+		this.mouseMove();
+
+		// update camera pos
         this.updateCamera();
 
-        this.mouseMove();
 		//tools.Log(this.cameraTarget.y);
         // plane data
         //console.log(this.plane.height);
@@ -169,6 +175,9 @@ export default class Scene3D {
 
         // render stuff
         this.renderer.render(this.scene, this.camera);
+
+        // Callback in first frame of render -> signify its loaded
+        tools.once(this.callback)
     }
 
     onWindowResize() {
@@ -273,14 +282,16 @@ export default class Scene3D {
         this.gui = new Dat.GUI();
         //this.gui.add(appConfig, 'debug');
     }
-
+	// TODO : event listener out of the raf
     mouseMove() {
-		window.addEventListener('mousemove', (e) => {
+		this.cameraMoves.speed = tools.map_range([1, 330], [1, 4], this.scaler);
+		window.addEventListener('mousemove', (e) => {this.moveCameraFromMouse(e)})
 
+	}
+	moveCameraFromMouse(e) {
+		if(!store.state.timelineUpdating) {
 			this.camera.position.x -= Math.max(Math.min((e.clientX - this.mouse.x) * 0.08, this.cameraMoves.speed), -this.cameraMoves.speed);
-
 			this.mouse.x = e.clientX;
-
-		})
+		}
 	}
 };

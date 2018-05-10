@@ -6,8 +6,8 @@ export default  {
         }
     },
     template: `<div id="timeline" class="timeline">
-                    <input class="timeline__range" type="range" :min="state.minYear" :max="state.maxYear" step="1" value="0" v-model="state.year">
+                    <input id="timeline__range" class="timeline__range" type="range" :min="state.minYear" :max="state.maxYear" step="1" value="0" v-model="state.year">
                     <div class="birth_date">{{state.minYear}}</div>
                     <div class="now">{{state.maxYear}}</div>
-                </div>`,
+                </div>`
 };

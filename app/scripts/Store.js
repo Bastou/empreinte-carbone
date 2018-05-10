@@ -4,11 +4,11 @@ export default class Store {
         this.state = {
             // On ajoute les props ici
             debug: false,
-            currentView: 'Scene', // Intro
+            currentView: 'Intro', // For debug : Scene
             load: false,
             json: null,
             countries: [],
-            country: 'France', // Null
+            country: null, // Null
             countryData: null,
             year: '1960',
             minYear: '1960',
@@ -17,8 +17,10 @@ export default class Store {
             co2GlobalMin: 0,
             co2GlobalMax: 0,
             scaler: 0,
+            timelineActive: false,
             timelineUpdating: false
-        }
+        };
+        this.$timeline = null
     }
 
     updateCo2 () {
@@ -27,7 +29,7 @@ export default class Store {
                 let key = Math.round(this.state.year);
                 //console.log(this.state.countryData[key])
                 // get co2 by key
-                this.state.co2 =  this.state.countryData[key]
+                this.state.co2 =  Math.round(this.state.countryData[key] * 1000) / 1000
                 // Update 3d
                 //scene3d.plane.height = this.state.co2 * 0.01;
             } else {
