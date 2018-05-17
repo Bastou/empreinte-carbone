@@ -8,7 +8,7 @@ export default class Plane {
         this.scaler = 0;
         this.tick = 0;
         this.width = 45;
-        this.widthSegments = 40;
+        this.widthSegments = 30;
         this.geometry = new THREE.PlaneGeometry(this.width, this.width, this.widthSegments, this.widthSegments);
         this.geometry.verticesNeedUpdate = true;
         this.material = new THREE.MeshLambertMaterial({
@@ -31,6 +31,8 @@ export default class Plane {
 
         // Noise
         this.baseAmplitude = 3;
+        this.noiseRatio = this.getNoiseRandRatio();
+        //console.log(this.noiseRatio);
         this.setNoiseHeight();
 
 
@@ -58,17 +60,23 @@ export default class Plane {
     }
 
     hidePetitsBoutsQuiDepassent() {
-		this.geometry.vertices[0].y -= 4
-		this.geometry.vertices[1].x -= 2
+		this.geometry.vertices[0].y -= 4;
+		this.geometry.vertices[1].x -= 1
 		this.geometry.vertices[this.geometry.vertices.length - 1].y += 5
-		this.geometry.vertices[this.geometry.vertices.length - 2].x += 2
+		this.geometry.vertices[this.geometry.vertices.length - 2].x += 1
 	}
+
+	getNoiseRandRatio() {
+        const result = (Math.floor(Math.random() * 50) + 11) * 0.001;
+        console.log(result);
+        return result;
+    }
 
     setNoiseHeight(factor = 1, scale = this.baseHeight, amplitude = 0) {
         const len = this.activeVertices.length;
         for (let i = 0;i < len; i++) {
             let v = this.activeVertices[i];
-            let noise = this.app.getNoise((v.x * 0.03) + factor, (v.y * 0.03) + factor, (10 * 0.03) + factor, 0) * (amplitude + this.baseAmplitude);
+            let noise = this.app.getNoise((v.x * this.noiseRatio) + factor, (v.y * this.noiseRatio) + factor, (10 * this.noiseRatio) + factor, 0) * (amplitude + this.baseAmplitude);
             //v.z += this.app.getNoise(v.x * 0.1, v.y * 0.125, v.z * 0.125, 0)
             v.z += ((scale + noise) - v.z) * 0.06;
             //v.z = Easing['easeOutCubic']( this.app.time, v.z, (store.state.co2 * 0.01 + noise) - v.z, this.totalIterations);

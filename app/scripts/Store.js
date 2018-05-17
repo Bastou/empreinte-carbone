@@ -4,7 +4,7 @@ export default class Store {
         this.state = {
             // On ajoute les props ici
             debug: false,
-            currentView: 'Intro', // For debug : Scene
+            currentView: 'Scene', // For debug : Scene
             load: false,
             json: null,
             countries: [],
@@ -18,7 +18,10 @@ export default class Store {
             co2GlobalMax: 0,
             scaler: 0,
             timelineActive: false,
-            timelineUpdating: false
+            timelineUpdating: false,
+            messages : {
+                noCo2: 'Aucune donnée disponible pour cette année'
+            }
         };
         this.$timeline = null
     }

@@ -26,20 +26,18 @@ export default class Scene3D {
         // Simplex
         this.simplex = new Simplex();
 
-        // this.scaler
-
         // Colors
         this.colors = [
             ['#7074FF', '#BD28FD'],
-            ['#7074FF', '#BD28FD'],
-            ['#00ECBC', '#2A9BF9'],
+            ['#4870FF', '#9E2FFD'],
+            ['#00ECBC', '#0D7FF9'], // ..., 0D7FF9
             ['#FFE19B', '#FC9696'],
             ['#8B9AB2', '#FCFCFC'],
             ['#2D6BDF', '#89F7FE'],
-            ['#20E26C', '#FEFFBF'],
+            ['#84EFAD', '#FFFE97'], // '#20E26C', '#FEFFBF'
             ['#FF7B31', '#FFF376'],
             ['#FF7B31', '#FFF376'],
-            ['#FFD8B9', '#F71B3A'],
+            ['#FFB282', '#F74B62'], //#FFD8B9, #F71B3A
         ];
 
         this.sceneColors = null;
@@ -48,7 +46,7 @@ export default class Scene3D {
         	"mainPointLight": {
         		obj: null,
         		color: 0xffffff,
-				intensity: 0.4,
+				intensity: 0.3,
 				initPos: {
         			x:-40,
 					y:5,
@@ -71,7 +69,7 @@ export default class Scene3D {
 				intensity: -0.7,
 				initPos: {
 					x:0,
-					y:-4,
+					y:-1,
 					z:0
 				}
 			},
@@ -223,16 +221,21 @@ export default class Scene3D {
     }
 
     updateCamera() {
-		this.camera.position.y += (tools.map_range([1, 330], [5, 550], this.scaler) - this.camera.position.y) * 0.05;
-		this.camera.position.z += (tools.map_range([1, 330], [70, 300], this.scaler) - this.camera.position.z) * 0.05;
+		this.camera.position.y += (tools.map_range([1, 330], [5, 450], this.scaler) - this.camera.position.y) * 0.05; // zoom (5, 450)
+		this.camera.position.z += (tools.map_range([1, 330], [70, 300], this.scaler) - this.camera.position.z) * 0.05; // rotation
+		//tools.Log(Math.round(this.camera.position.z));
 		this.cameraTarget.y += (tools.map_range([1, 330], [-15, 220], this.scaler) - this.cameraTarget.y) * 0.05;
 
 		this.camera.lookAt(this.cameraTarget);
     }
 
     updateLights() {
+
     	// Update lightgroup y pos
         this.lightGroup.position.y += (this.plane.height - this.lightGroup.position.y-6) * 0.08;
+
+        // Update Main Light Intensity
+        this.pointLights.mainPointLight.obj.intensity = Math.min(this.co2Scale(this.pointLights.mainPointLight.intensity, 1), 1.4);
 
         // Update pointLightColor pos
         this.pointLights.pointLightColor.obj.position.x = this.co2Scale(this.pointLights.pointLightColor.initPos.x, 30)
@@ -271,7 +274,7 @@ export default class Scene3D {
         //return tools.map_range(store.state.co2, 500, 2000000, 1, 330)
 
         // TODO: debug somethong wrong with the map range
-		let result = tools.map_range([500, 1000000], [1, 330], store.state.co2);
+		let result = tools.map_range([500, 900000], [1, 330], store.state.co2);
         return result
     }
     co2Scale(initVal, maxVal) {

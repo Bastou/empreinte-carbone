@@ -84,7 +84,7 @@ export default class App {
                 },
 				'state.timelineUpdating': function () {
 					console.log('timelineUpdating', this.state.timelineUpdating)
-				}
+				},
             },
             created: function () {
 
@@ -100,7 +100,7 @@ export default class App {
                     });
 
 					// Debug
-					//this.state.country = 'Arab World';
+					this.state.country = 'Eritrea'; //'Arab World';
 
                     // Fill min and max
                     //store.updateCo2GlobalMin();
