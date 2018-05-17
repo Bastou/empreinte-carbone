@@ -100,7 +100,7 @@ export default class App {
                     });
 
 					// Debug
-					this.state.country = 'Eritrea'; //'Arab World';
+					//this.state.country = 'Eritrea'; //'Arab World';
 
                     // Fill min and max
                     //store.updateCo2GlobalMin();

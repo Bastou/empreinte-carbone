@@ -36,14 +36,14 @@ export default  {
 
             <timeline ref="timeline"></timeline>
 
-            <div class="galery_button">
+            <div class="galery_button disabled" title="bientôt disponible ! 🤘">
                <img src="/assets/img/galerie.svg" alt="galerie" height="20" width="20"/>
                 <a href="#">Galerie</a>
             </div>
             
             <div class="ctas">
                 <div class="CTA animated fadeInUp"><a href="#">Exporter une image</a></div><br/>
-                <div class="CTA animated fadeInUp"><a href="#">Imprimer en 3D</a></div>
+                <!--<div class="CTA animated fadeInUp"><a href="#">Imprimer en 3D</a></div>-->
             </div>
             <div id="scene"></div>
 </div>`,

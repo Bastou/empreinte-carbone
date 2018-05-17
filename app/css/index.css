@@ -56,6 +56,8 @@ body {
     text-align: center;
 }
 
+
+
 /* Timeline */
 
 .timeline {
@@ -764,9 +766,10 @@ header {
 .galery_button {
     position: absolute;
     z-index: 50;
-    bottom: 64px;
-    left: 64px;
+    bottom: 54px;
+    left: 54px;
     display: flex;
+    padding: 20px;
 }
 
 .galery_button a {
@@ -777,6 +780,31 @@ header {
     text-decoration: none;
     display: block;
     margin-left: 16px;
+}
+
+.galery_button.disabled a, .galery_button.disabled img {
+        pointer-events: none;
+        opacity: 0.5
+}
+
+.galery_button.disabled:after {
+    content: attr(title);
+     opacity: 0;
+     visibility: hidden;
+    transform: translateY(20px);
+    position: absolute;
+    top: -50%;
+    min-width: 200px;
+    font-size: 13px;
+    left: 20px;
+    -webkit-transition: all 600ms cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 600ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.galery_button.disabled:hover:after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 /***** EMISSION CO2 *****/

@@ -26,7 +26,6 @@ export default {
             this.validateYear(event.target.value);
         },
         validateYear(year) {
-            console.log(year);
             let textFormat = /^[0-9]+$/;
             if (year != 0) {
 

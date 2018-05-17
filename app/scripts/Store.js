@@ -4,7 +4,7 @@ export default class Store {
         this.state = {
             // On ajoute les props ici
             debug: false,
-            currentView: 'Scene', // For debug : Scene
+            currentView: 'Intro', // For debug : "Scene" else "Intro"
             load: false,
             json: null,
             countries: [],
