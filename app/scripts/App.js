@@ -1,5 +1,5 @@
 // third party
-import Vue from 'vue/dist/vue.js';
+import Vue from 'vue/dist/vue.min.js';
 //import VueRouter from 'vue-router/dist/vue-router.js'; // On abandonne mamene
 import VueResource from 'vue-resource/dist/vue-resource.js';
 import VueSelect from 'vue-select/dist/vue-select.js';
@@ -100,7 +100,9 @@ export default class App {
                     });
 
 					// Debug
-					//this.state.country = 'Eritrea'; //'Arab World';
+                    if(this.state.debug) {
+                        this.state.country = 'Arab World';
+                    }
 
                     // Fill min and max
                     //store.updateCo2GlobalMin();

@@ -89,6 +89,7 @@ export default class Scene3D {
     }
 
     init(callback) {
+        callback = (callback !== null && callback !== undefined) ? callback : ()=>{};
 
         // Colors
         this.sceneColors = this.getRandomColors();
@@ -115,7 +116,7 @@ export default class Scene3D {
 
 
         // Set Renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 

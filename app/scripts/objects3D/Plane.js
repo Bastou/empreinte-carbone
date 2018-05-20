@@ -60,10 +60,13 @@ export default class Plane {
     }
 
     hidePetitsBoutsQuiDepassent() {
-		this.geometry.vertices[0].y -= 4;
-		this.geometry.vertices[1].x -= 1
-		this.geometry.vertices[this.geometry.vertices.length - 1].y += 5
-		this.geometry.vertices[this.geometry.vertices.length - 2].x += 1
+		//this.geometry.vertices[0].y += 1;
+		this.geometry.vertices[1].x -= 1.5;
+
+
+		//this.geometry.vertices[this.geometry.vertices.length - 1].y += 0; // +5
+        this.geometry.vertices[this.geometry.vertices.length - 1].x -= 1; // +5
+		this.geometry.vertices[this.geometry.vertices.length - 2].x += 1.5;
 	}
 
 	getNoiseRandRatio() {
