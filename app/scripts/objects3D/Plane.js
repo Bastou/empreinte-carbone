@@ -71,7 +71,6 @@ export default class Plane {
 
 	getNoiseRandRatio() {
         const result = (Math.floor(Math.random() * 50) + 11) * 0.001;
-        console.log(result);
         return result;
     }
 

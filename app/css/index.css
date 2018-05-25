@@ -549,7 +549,12 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 }
 
 .input-field .v-select .selected-tag {
+    left: 0;
     margin-bottom: -140px;
+    overflow: hidden;
+    padding-right: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .input-field .v-select .dropdown-menu {

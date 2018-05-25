@@ -52,7 +52,9 @@ module.exports = function(env) {
         context: path.resolve(__dirname, 'app'),
         devServer: {
             host: "0.0.0.0",
-            disableHostCheck: true
+            port: "8080",
+            inline:true,
+            disableHostCheck: true 
         },
         entry: {
             main: './index.js'

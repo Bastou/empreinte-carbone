@@ -1,5 +1,6 @@
 // third party
 import Vue from 'vue/dist/vue.min.js';
+import VueI18n from 'vue-i18n/dist/vue-i18n.min.js';
 //import VueRouter from 'vue-router/dist/vue-router.js'; // On abandonne mamene
 import VueResource from 'vue-resource/dist/vue-resource.js';
 import VueSelect from 'vue-select/dist/vue-select.js';
@@ -24,9 +25,11 @@ export default class App {
         // Init main
         //Vue.component('v-select', VueSelect.VueSelect)
         Vue.component('v-select', VueSelect);
-
         Vue.component('timeline', Timeline);
 
+
+        // VueI18n
+        Vue.use(VueI18n);
 
         // Resources
         Vue.use(VueResource);
@@ -101,7 +104,7 @@ export default class App {
 
 					// Debug
                     if(this.state.debug) {
-                        this.state.country = 'Arab World';
+                        this.state.country = 'United Arab Emirates';
                     }
 
                     // Fill min and max
