@@ -46,7 +46,9 @@ export default  {
                 <timeline ref="timeline"></timeline>
                 
                 <div class="ctas">
-                    <div class="CTA animated fadeInUp"><a href="#">Exporter une image</a></div><br/>
+                    <div class="animated fadeInUp">
+                        <div class="CTA"><a href="#">Exporter une image</a></div><br/>
+                    </div>
                     <!--<div class="CTA animated fadeInUp"><a href="#">Imprimer en 3D</a></div>-->
                 </div>
             </div>
@@ -138,6 +140,9 @@ export default  {
         }
     },
     mounted: function () {
+
+        // Store mounted
+        store.onMounted();
 
         this.manageCo2Display(this.state.co2);
         this.timelinePulsate();

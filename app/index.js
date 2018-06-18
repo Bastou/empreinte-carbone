@@ -8,12 +8,14 @@ import Easing from './scripts/vendors/easing';
 //import TweenLite from 'gsap/src/minified/TweenLite.min.js';
 import Store from './scripts/Store';
 import Tools from './scripts/Tools';
+import AttractButtons from './scripts/modules/AttractButtons.js';
 import App from './scripts/App';
 
 window.Easing = Easing;
 window.appConfig = config;
 window.store = new Store();
 window.tools = new Tools();
+window.AttractButton = AttractButtons;
 window.app = new App();
 
 

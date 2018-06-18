@@ -39,6 +39,18 @@ export default class Store {
                 return 0;
             }
     }
+    // On Mounted for each vue components
+    onMounted() {
+        this.hoverFxOnCta();
+    }
+    hoverFxOnCta() {
+        var ctaList = document.querySelectorAll(".CTA");
+        if(ctaList.length > 0) {
+            ctaList.forEach(function(el) {
+                new AttractButton(el);
+            });
+        }
+    }
     updateCo2GlobalMin () {
         // TODO: Get min and max from object
     }

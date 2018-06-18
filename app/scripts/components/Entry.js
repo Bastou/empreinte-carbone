@@ -1,10 +1,13 @@
 export default {
     data: function () {
+        // TODO: add trad for error messages
         return {
             // State et pas count pour que toutes les mutations soient détectées
             state: store.state,
             inputYear: null,
-            warnMessage: ""
+            warnMessage: "",
+            textInstructionNaissance: i18n.t('message.instructionNaissance'),
+            textboutonSuivant: i18n.t('message.boutonSuivant'),
         }
     },
     template: `<div class="intro_container">
@@ -12,13 +15,14 @@ export default {
                     <img src="/assets/img/logo.svg" alt="logo" />
                     <h1>Empreinte Carbone</h1>
                 </div>
-
-                <p class="intro_p animated fadeInUp">Pour commencer, nous avons besoin de votre année de naissance :</p>
+                <p class="intro_p animated fadeInUp" v-html="textInstructionNaissance"></p>
                 <div class="input-field">
                     <input pouet="pouet" placeholder="ex:1994" id="birth_date" type="text" min="state.inputYear" max="state.maxYear" v-model.number="inputYear" @keyup.enter="switchToEntry2" @keyup="inputDateMask" class="animated fadeInUp">
                     <p class="input-warn-message">{{ warnMessage }}</p>
                 </div>
-                <div class="CTA animated fadeInUp"><a href="#" @click.prevent="switchToEntry2">Suivant</a></div>
+                <div class="animated fadeInUp">
+                    <div class="CTA"><a href="#" @click.prevent="switchToEntry2" v-html="textboutonSuivant"></a></div>
+                </div>
             </div>`,
     methods: {
         inputDateMask(event) {
@@ -63,5 +67,9 @@ export default {
                 this.warnMessage = 'Year isn\'t valid';
             }
         }
+    },
+    mounted() {
+        // Store mounted
+        store.onMounted();
     }
 };

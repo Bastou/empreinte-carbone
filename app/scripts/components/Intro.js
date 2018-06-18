@@ -2,7 +2,9 @@ export default  {
     data: function () {
         return {
             // State et pas count pour que toutes les mutations soient détectées
-            state: store.state
+            state: store.state,
+            textIntro: i18n.t('message.intro'),
+            textBtnStart: i18n.t('message.boutonDemarrer'),
         }
     },
     template: `
@@ -11,13 +13,25 @@ export default  {
                    <img src="/assets/img/gif_logo.gif" alt="logo" />
                     <h1>Empreinte Carbone</h1>
                 </div>
-
-                <p class="intro_p animated fadeInUp">On ne cesse de parler de l’augmentation du CO2 autour du globe, mais vous, où vous placez-vous dans tout ça ?<br/><br/> Reliez votre naissance à l’évolution de la courbe du CO2 pour générer quelque chose d’unique.</p>
-                <div class="CTA animated fadeInUp" @click="switchToEntry"><a href="#">Démarrer</a></div>
+                <p class="intro_p animated fadeInUp" v-html="textIntro"><p>
+                <div class="animated fadeInUp">
+                    <div ref="cta" class="CTA" @click="switchToEntry"><a href="#" v-html="textBtnStart"></a></div>
+                </div>
             </div>`,
     methods: {
         switchToEntry() {
             this.state.currentView = 'Entry';
-        }
+        },
+        // attractButton() {
+        //     const btn = this.$refs.cta;
+        //     new AttractButton(btn);
+        // }
+    },
+    mounted() {
+        // Store mounted
+        store.onMounted();
+
+        console.log(i18n.t('message.greeting', { name: 'kazupon' })); // -> hola kazupon
+        console.log(window.i18n.tc('message.pain'));
     }
 };

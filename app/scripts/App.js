@@ -4,6 +4,7 @@ import VueI18n from 'vue-i18n/dist/vue-i18n.min.js';
 //import VueRouter from 'vue-router/dist/vue-router.js'; // On abandonne mamene
 import VueResource from 'vue-resource/dist/vue-resource.js';
 import VueSelect from 'vue-select/dist/vue-select.js';
+import traductions from './traductions.js';
 import Intro from './components/Intro.js';
 import Entry from './components/Entry.js';
 import Entry2 from './components/Entry2.js';
@@ -23,6 +24,7 @@ export default class App {
         // Main app stuff here
 
         // Init main
+
         //Vue.component('v-select', VueSelect.VueSelect)
         Vue.component('v-select', VueSelect);
         Vue.component('timeline', Timeline);
@@ -30,6 +32,15 @@ export default class App {
 
         // VueI18n
         Vue.use(VueI18n);
+
+        // Create VueI18n instance with options
+        console.log(navigator.language);
+        this.i18n = new VueI18n({
+            locale: navigator.language, //'en', // set locale
+            messages: traductions.messages // set locale messages
+        });
+        window.i18n = this.i18n;
+
 
         // Resources
         Vue.use(VueResource);
@@ -49,6 +60,14 @@ export default class App {
                 Entry,
                 Entry2,
                 Scene
+            },
+            methods: {
+                getMessage: function (key) {
+                    return this.$t(key)
+                },
+                test: function () {
+                    console.log('test');
+                }
             },
             computed: {
                 viewClass: function () {
