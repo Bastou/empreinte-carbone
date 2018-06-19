@@ -1,57 +1,51 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- charset -->
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- charset -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <!-- resp -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- resp -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Bastien Cornier" />
+	<meta name="description" content="CO2 Data Visualisation that generate a unique shape with your country and your birth date" />
+	
+	<!-- favicons -->
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="theme-color" content="#ffffff">
+	
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@bastiencornier">
+	<meta name="twitter:title" content="Empreinte Carbone">
+	<meta name="twitter:description" content="Data Visualization that create a unique shape from the CO2 evolution of your country and your birth date">
+	<meta name="twitter:image" content="https://empreinte-carbone.bastiencornier.com/og-image.jpg">
 
-    <!-- favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+	<!-- facebook og -->
+	<meta property="og:image:width" content="1860">
+	<meta property="og:image:height" content="974">
+	<meta property="og:title" content="Empreinte Carbone">
+	<meta property="og:description" content="Generate a unique shape from the CO2 country evolution">
+	<meta property="og:url" content="https://empreinte-carbone.bastiencornier.com/">
+	<meta property="og:image" content="https://empreinte-carbone.bastiencornier.com/og-image.jpg">
 
-    <title>Emprunte Carbone</title>
+	<title>Emprunte Carbone</title>
 </head>
 
 <body>
-    <div id="main">
-        <div id="app" v-if="state.load">
-                <!--
-                <div class="debugger" v-if="state.debug">
-                    <input type="number" v-model="state.year" min="1960" max="2016">
-                    <v-select v-model.lazy="state.country" :options="state.countries"></v-select>
-                    <hr>
-
-                    <dl>
-                        <dt>Year</dt>
-                        <dd>{{state.year}}</dd>
-                        <dt>co2</dt>
-                        <dd>{{state.co2}}</dd>
-                        <dt>country</dt>
-                        <dd>{{state.country}}</dd>
-                        <dt>scaler</dt>
-                        <dd>{{state.scaler}}</dd>
-                    </dl>
-                    <hr>
-                </div>
-                -->
-
-                <!-- route outlet -->
-                <!-- component matched by the route will render here -->
-                <div class="view" :class="viewClass">
-                    <component class="view--inner" :class="state.currentView" v-bind:is="state.currentView">
-                        <!-- component changes when vm.currentView changes! -->
-                    </component>
-                </div>
+	<div id="main">
+		<div id="app" v-if="state.load">
+            <!-- route outlet -->
+            <!-- component matched by the route will render here -->
+            <div class="view" :class="viewClass">
+            	<component class="view--inner" :class="state.currentView" v-bind:is="state.currentView">
+            		<!-- component changes when vm.currentView changes! -->
+            	</component>
+            </div>
         </div>
     </div>
 </body>

@@ -64,7 +64,6 @@ export default class Plane {
 		this.geometry.vertices[1].x -= 1.5;
 
 
-		//this.geometry.vertices[this.geometry.vertices.length - 1].y += 0; // +5
         this.geometry.vertices[this.geometry.vertices.length - 1].x -= 1; // +5
 		this.geometry.vertices[this.geometry.vertices.length - 2].x += 1.5;
 	}
@@ -79,39 +78,14 @@ export default class Plane {
         for (let i = 0;i < len; i++) {
             let v = this.activeVertices[i];
             let noise = this.app.getNoise((v.x * this.noiseRatio) + factor, (v.y * this.noiseRatio) + factor, (10 * this.noiseRatio) + factor, 0) * (amplitude + this.baseAmplitude);
-            //v.z += this.app.getNoise(v.x * 0.1, v.y * 0.125, v.z * 0.125, 0)
             v.z += ((scale + noise) - v.z) * 0.06;
-            //v.z = Easing['easeOutCubic']( this.app.time, v.z, (store.state.co2 * 0.01 + noise) - v.z, this.totalIterations);
-        }
-    }
-
-    // TODO: Remove
-    updateFromCo2() {
-        //TweenLite.to(this.activeVertices, 0.5, {z:store.state.co2 * 0.01})
-        console.log(store.state.timelineActive);
-        if(store.state.timelineActive == true) {
-            const len = this.activeVertices.length;
-            let update = 0;
-            for (let i = 0;i < len; i++) {
-                let v = this.activeVertices[i];
-                //v.z += (store.state.co2 * 0.01 - v.z) * 0.01;
-                //= update;
-                v.z = Easing['easeOutCubic']( this.app.time, v.z, (store.state.co2 * 0.01) - v.z, this.totalIterations);
-                console.log(v.z )
-                if (this.iterationCount > this.totalIterations) {
-                    store.state.timelineActive = false;
-                }
-                this.iterationCount++;
-            }
         }
     }
 
     animate () {
         this.tick += 0.0001 * appConfig.speed;
-        //this.scaler = store.state.co2 * 0.0001;
         this.height = this.baseHeight + this.app.scaler;
         this.setNoiseHeight(this.tick, this.height, this.app.scaler * 0.3);
-        //this.updateFromCo2();
         store.state.scaler = this.app.scaler;
         this.geometry.rotateZ(Math.sin(0.0008));
     }
