@@ -8,7 +8,7 @@ export default class AttractButton {
         this.animIterationCount = 0;
         this.animTotalIterations = (60 * 0.3); // 1 seconds
 
-        this.domText = this.getButtonTextEl()
+        this.domText = this.getButtonTextEl();
 
         this.calculatePosition();
         this.attachEventsListener();

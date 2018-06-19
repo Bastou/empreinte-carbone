@@ -376,12 +376,14 @@ p {
     transition: color 0.3s ease;
 }
 
-.CTA:hover {
+.CTA:hover, .CTA:active {
     border: solid 1px #902beb;
-    box-shadow: 0px 0px 25px 0px rgb(144, 43, 235, 0.15);
+    -moz-box-shadow:0px 0px 25px 0px rgba(144, 43, 235, 0.15);
+    box-shadow: 0px 0px 25px 0px rgba(144, 43, 235, 0.15);
+    -webkit-box-shadow: 0px 0px 25px 0px rgba(144, 43, 235, 0.15);
 }
 
-.CTA:hover a {
+.CTA:hover a, .CTA:active a {
     color: #902beb;
 }
 
@@ -530,6 +532,10 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     border: none;
 }
 
+.input-field .v-select.open {
+    border-bottom: 1px solid #902BEB;
+}
+
 .input-field .v-select input[type=search],
 .input-field .v-select input[type=search]:focus,
 .input-field .v-select .selected-tag {
@@ -556,6 +562,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     padding-right: 30px;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-bottom: 5px;
 }
 
 .input-field .v-select .dropdown-menu {
@@ -565,7 +572,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     color: #FFF;
     border: 1px solid rgba(240, 247, 255, 0.4);
     /* border-top-width: 2px; */
-    border-top-color: #F0F7FF;
+    border-top-color: #902BEB;
     padding: 15px 0;
 }
 
@@ -734,7 +741,7 @@ header {
 #scene-localisation  .selected-tag {
     width: 230px !important;
     font-size: 16px !important;
-    height: 30px;
+    height: 36px;
     line-height: 40px;
     padding-bottom: 10px;
 }
@@ -865,6 +872,9 @@ header {
         width: 100%;
 
     }
+    .bigYear {
+        left: 53%;
+    }
     #timeline {
         transform: none;
         left: 114px;
@@ -879,10 +889,19 @@ header {
 
 
     .bigYear {
-        font-size: 160px;
+        font-size: 230px;
+        letter-spacing: 0.19em;
+        left: 51%;
         top: 36.5%;
         margin: 0;
         transform: translate(-50%,-50%);
+    }
+
+
+    .input-warn-message {
+        position: static;
+        margin-top: 20px;
+        margin-left: 0;
     }
 }
 
@@ -890,6 +909,10 @@ header {
 @media screen and (max-width: 660px) {
     body {
         padding: 25px;
+    }
+
+    p {
+        margin: 0.5em 0;
     }
 
     /* INTRO */
@@ -944,6 +967,7 @@ header {
         line-height: 60px;
         height: 42px;
         margin: 20px 0;
+        padding-bottom: 0;
     }
 
     .input-field .v-select input[type=search],
@@ -953,6 +977,23 @@ header {
         line-height: 40px;
         height: 60px;
         left:0;
+    }
+
+    .input-field .v-select input[type=search]::-webkit-input-placeholder {
+        /* Chrome/Opera/Safari */
+        font-size: 40px;
+    }
+    .input-field .v-select input[type=search]::-moz-placeholder {
+        /* Chrome/Opera/Safari */
+        font-size: 40px;
+    }
+    .input-field .v-select input[type=search]:-ms-input-placeholder {
+        /* Chrome/Opera/Safari */
+        font-size: 40px;
+    }
+    .input-field .v-select input[type=search]:-moz-placeholder {
+        /* Chrome/Opera/Safari */
+        font-size: 40px;
     }
 
     .v-select.single .selected-tag {
@@ -973,8 +1014,9 @@ header {
     }
     .logo_main {
         position: absolute;
+        top: -10px;
         left: 50%;
-        transform: translate(-50%,0);
+        transform: translate(-50%,0) scale3D(0.8,0.8,0.8);
     }
     .logo_main a {
         width: 75px;
@@ -982,7 +1024,7 @@ header {
     }
     .localisation {
         position: absolute;
-        top: 60px;
+        top: 70px;
         left: 50%;
         margin-left: 13px;
         transform: translate(-50%,0);
@@ -995,21 +1037,23 @@ header {
         font-size: 14px;
     }
     .bigYear {
+        top: 40%;
         font-size: 30vw;
         letter-spacing: 7vw;
         margin-left: 5px;
     }
     .value_container {
-        top: 51%;
+        top: 52%;
     }
     .value_container p {
         font-size: 14px;
     }
     .timeline__value {
-        font-size: 30;
+        font-size: 30px;
     }
     #scene {
         left: 0;
+        transform: scale3D(0.9,0.9,0.9);
     }
     .timeline__value {
         font-size: 25px;
@@ -1025,6 +1069,7 @@ header {
         transform: scale(0.8);
         bottom: 63px;
         left: -2px;
+        padding-top: 10px;
     }
     #timeline {
         left: 74px;
