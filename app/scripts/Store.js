@@ -41,7 +41,10 @@ export default class Store {
     }
     // On Mounted for each vue components
     onMounted() {
-        this.hoverFxOnCta();
+        if (window.matchMedia("(min-width: 1025px)").matches) {
+            this.hoverFxOnCta();
+        }
+
     }
     hoverFxOnCta() {
         var ctaList = document.querySelectorAll(".CTA");
