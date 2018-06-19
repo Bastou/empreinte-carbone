@@ -3,7 +3,8 @@ export default {
         return {
             // State et pas count pour que toutes les mutations soient détectées
             state: store.state,
-            textinstructionPays: i18n.t('message.instructionPays'),
+            textInstructionPays: i18n.t('message.instructionPays'),
+            textBoutonGenerer: i18n.t('message.boutonGenerer'),
         }
     },
     template: `
@@ -13,12 +14,12 @@ export default {
                     <h1>Empreinte Carbone</h1>
                 </div>
 
-                <p class="intro_p animated fadeInUp" v-html="textinstructionPays"></p>
+                <p class="intro_p animated fadeInUp" v-html="textInstructionPays"></p>
                 <div class="input-field animated fadeInUp">
                     <v-select id="localisation" placeholder="ex:France" v-model.lazy="state.country" :options="state.countries" @keyup.enter="switchToMain" autofocus></v-select>
                 </div>
                 <div class="animated fadeInUp">
-                    <div class="CTA"><a href="#" @click.prevent="switchToMain">Voir les résultats</a></div>
+                    <div class="CTA"><a href="#" @click.prevent="switchToMain" v-html="textBoutonGenerer"></a></div>
                 </div>
             </div>`,
     watch: {

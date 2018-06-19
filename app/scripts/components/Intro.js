@@ -30,8 +30,5 @@ export default  {
     mounted() {
         // Store mounted
         store.onMounted();
-
-        console.log(i18n.t('message.greeting', { name: 'kazupon' })); // -> hola kazupon
-        console.log(window.i18n.tc('message.pain'));
     }
 };

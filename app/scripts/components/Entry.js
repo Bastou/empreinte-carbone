@@ -7,7 +7,7 @@ export default {
             inputYear: null,
             warnMessage: "",
             textInstructionNaissance: i18n.t('message.instructionNaissance'),
-            textboutonSuivant: i18n.t('message.boutonSuivant'),
+            textBoutonSuivant: i18n.t('message.boutonSuivant'),
         }
     },
     template: `<div class="intro_container">
@@ -21,7 +21,7 @@ export default {
                     <p class="input-warn-message">{{ warnMessage }}</p>
                 </div>
                 <div class="animated fadeInUp">
-                    <div class="CTA"><a href="#" @click.prevent="switchToEntry2" v-html="textboutonSuivant"></a></div>
+                    <div class="CTA"><a href="#" @click.prevent="switchToEntry2" v-html="textBoutonSuivant"></a></div>
                 </div>
             </div>`,
     methods: {
@@ -35,20 +35,20 @@ export default {
 
                 if ((year != '') && (!textFormat.test(year))) {
 
-                    this.warnMessage = 'Merci d\'entrer seulement des valeurs numériques';
+                    this.warnMessage = i18n.t('message.dateWarnings.valeursNumeriques');
                     //console.log("Please Enter Numeric Values Only");
                     return false;
                 }
 
                 if (year.length > 4) {
-                    this.warnMessage = 'L\'année n\'est pas valide. Vérifiez à nouveau';
+                    this.warnMessage = i18n.t('message.dateWarnings.anneeInvalide');
                     //console.log("Year is not proper. Please check");
                     return false;
                 }
                 let current_year=new Date().getFullYear();
                 if(year.length === 4 && (year < this.state.minYear) || (year > this.state.maxYear))
                 {
-                    this.warnMessage = 'L\'année doit être comprise entre ' + this.state.minYear + ' et ' + this.state.maxYear;
+                    this.warnMessage = i18n.t('message.dateWarnings.anneeChamp', { minYear: 1960, maxYear: 2014 });
                     //console.log("Year should be in range 1960 to 2017");
                     return false;
                 }
@@ -64,7 +64,7 @@ export default {
                 this.state.minYear = this.inputYear;
                 this.state.currentView = 'Entry2';
             } else {
-                this.warnMessage = 'Year isn\'t valid';
+                this.warnMessage = i18n.t('message.dateWarnings.anneeInvalide');
             }
         }
     },

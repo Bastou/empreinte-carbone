@@ -34,9 +34,16 @@ export default class App {
         Vue.use(VueI18n);
 
         // Create VueI18n instance with options
-        console.log(navigator.language);
+        console.log('browser lang:', navigator.language);
+        let localeLang = '';
+		if (navigator.language.includes('fr')) {
+        	localeLang = 'fr';
+        } else {
+        	localeLang = 'en';
+        } 
+        console.log('app lang:', localeLang);
         this.i18n = new VueI18n({
-            locale: navigator.language, //'en', // set locale
+            locale: localeLang, //'en', // set locale
             messages: traductions.messages // set locale messages
         });
         window.i18n = this.i18n;

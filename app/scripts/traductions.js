@@ -13,12 +13,17 @@ export default {
                 boutonExportImage: 'Export an image',
                 boutonSuivant: 'Next',
                 boutonDemarrer: 'Start',
-                boutonGenerer: 'Générer',
+                boutonGenerer: 'Generate',
+                dateWarnings: {
+                	valeursNumeriques: 'Please enter numeric values only',
+                	anneeInvalide: 'Year isn\'t valid. Check again',
+                	anneeChamp: 'Year must be between {minYear} and {maxYear}',
+                },
                 greeting: 'hi {name}',
                 pain: 'bread'
             }
         },
-        'fr-FR': {
+        fr: {
             message: {
                 intro: `On ne cesse de parler de l’augmentation du CO2 autour du globe, mais vous, où vous placez-vous dans tout ça ?
                 <br> Reliez votre naissance à l’évolution de la courbe du CO2 pour générer votre forme unique.`,
@@ -32,6 +37,11 @@ export default {
                 boutonSuivant: 'Suivant',
                 boutonDemarrer: 'Démarrer',
                 boutonGenerer: 'Générer',
+                dateWarnings: {
+                	valeursNumeriques: 'Merci d\'entrer seulement des valeurs numériques',
+                	anneeInvalide: 'L\'année n\'est pas valide. Vérifiez à nouveau',
+                	anneeChamp: 'L\'année doit être comprise entre {minYear} et {maxYear}',
+                },
                 greeting: 'coucou {name}',
                 pain: 'mie'
             }

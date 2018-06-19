@@ -6,7 +6,12 @@ export default  {
         return {
             // State et pas count pour que toutes les mutations soient détectées
             state: store.state,
-            hasNoCo2: false
+            hasNoCo2: false,
+            textEmissionsCO2: i18n.t('message.emissionsCO2'),
+            textKilotonnes: i18n.t('message.kilotonnes'),
+            textBoutonGalerie: i18n.t('message.boutonGalerie'),
+            textBoutonBientotDispo: i18n.t('message.boutonBientotDispo'),
+            textBoutonExportImage: i18n.t('message.boutonExportImage'),
         }
     },
     template: `
@@ -26,28 +31,28 @@ export default  {
             </header>
             <div class="value_container">
                 
-                <p>Emissions de CO2</p>
+                <p v-html="textEmissionsCO2"></p>
                 <div class="timeline__value__wrapper" v-bind:class="{ noCo2: hasNoCo2 }">
                     <div class="timeline__value">{{ state.co2 }}</div>
                     <div class="timeline__value-message" data-html2canvas-ignore="true">{{ state.messages.noCo2 }}</div>
                 </div>
                 
-                <p>Kilotonnes</p>
+                <p v-html="textKilotonnes"></p>
                 
             </div>
             <div class="bigYear">{{ state.year }}</div>
             
             <div class="bottom" data-html2canvas-ignore="true">
-                <div class="galery_button disabled" title="bientôt disponible ! 🤘">
-                   <img src="/assets/img/galerie.svg" alt="galerie" height="20" width="20"/>
-                    <a href="#">Galerie</a>
+                <div class="galery_button disabled" v-bind:title="textBoutonBientotDispo">
+                   <img src="/assets/img/galerie.svg" height="20" width="20"/>
+                    <a href="#" v-html="textBoutonGalerie"></a>
                 </div>
                 
                 <timeline ref="timeline"></timeline>
                 
                 <div class="ctas">
                     <div class="animated fadeInUp">
-                        <div class="CTA"><a href="#">Exporter une image</a></div><br/>
+                        <div class="CTA"><a href="#" v-html="textBoutonExportImage"></a></div><br/>
                     </div>
                     <!--<div class="CTA animated fadeInUp"><a href="#">Imprimer en 3D</a></div>-->
                 </div>

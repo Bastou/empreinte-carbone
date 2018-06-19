@@ -36,7 +36,6 @@ export default class AttractButton {
         this.y = box.top + (box.height * 0.5) - box.height*2;
         this.width = box.width;
         this.height = box.height;
-        console.log(this.width);
     }
 
     onMouseMove(e) {
